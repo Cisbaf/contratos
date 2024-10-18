@@ -32,7 +32,8 @@ SECRET_KEY = 'django-insecure-pzm4#uxry%-t*ivisa6zypi2*546$(s-tvz4iwzg6$=vfm+)6k
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ['http://*.atendimentocrur.cisbaf.org.br', 'https://*.atendimentocrur.cisbaf.org.br']
+CSRF_TRUSTED_ORIGINS = ['http://controledecontrato.cisbaf.org.br',
+                         'https://controledecontrato.cisbaf.org.br']
 AUTH_USER_MODEL = 'accounts.CustomUser'
 # Application definition
 
