@@ -1,0 +1,118 @@
+{% extends 'static/contracts/base_dash.html' %}
+{% load static %}
+{% load contract_func %}
+
+{% block head%}
+    <script src="{% static 'contracts/js/api.js' %}"></script>
+    <script src="{% static 'contracts/js/global.js' %}"></script>
+    <script src="{% static 'contracts/js/ofcanvasContract.js' %}"></script>
+    <script src="{% static 'contracts/js/pageContract.js' %}"></script>
+    <title>Cisbaf - Contratos </title>
+
+{% endblock head %}
+
+{% block body %}
+<div class="row" style="max-width: 99%;padding: 5px;">
+    <div class="col-lg-12">
+        <div class="main-box clearfix">
+            <div class="table-responsive" style="overflow: auto;max-height: 80vh;">
+                <table class="table user-list">
+                    <thead>
+                        <tr>
+                            <th><span>Numero Contrato</span></th>
+                            <th><span>Objeto Contrato</span></th>
+                            <th><span>Numero Processo</span></th>
+                            <th><span>Empresa</span></th>
+                            <th><span>CNPJ/CPF</span></th>
+                            <th><span>Valor Global</span></th>
+                            <th><span>Valor Mensal</span></th>
+                            <th><span>Fiscais</span></th>
+                            <th><span>Vigencia</span></th>
+                            <th><span>Fonte</span></th>
+                            <th>
+                                <button class="btn btn-link" type="button" onclick="CreateContractCanvas();">
+                                    NOVO CONTRATO
+                                </button>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for contract in contracts %}
+                        <tr id="contract-{{ contract.pk }}" name="search">
+                            <td name="search" data-pk={{ contract.pk }}>
+                                <div class="d-flex justify-content-center align-items-center" style="gap: 20px;">
+                                    <i class="fa-solid fa-file-contract"></i>
+                                    {{ contract.number_contract }}
+                                </div>
+                            </td>
+                            <td name="search" data-pk={{ contract.pk }}>
+                                <label data-bs-toggle="tooltip"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ contract.object }}">{% short_obj contract.object %}</label>
+                                <label style="display:none;">{{ contract.object }}</label>
+                            </td>
+                            <td name="search" data-pk={{ contract.pk }}>
+                                <label data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ contract.number_process }}" >{% short_obj contract.number_process %}</label>
+                                <label style="display:none;">{{ contract.number_process }}</label>
+                            </td>
+                            <td name="search" data-pk={{ contract.pk }}>
+                                <label data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ contract.company }}" >{% short_obj contract.company %}</label>
+                                <label style="display:none;">{{ contract.company }}</label>
+                            </td>
+                            <td name="search" data-pk={{ contract.pk }}>
+                                <label data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ contract.cnpj_cpf }}" >{% short_obj contract.cnpj_cpf %}</label>
+                                <label style="display:none;">{{ contract.cnpj_cpf }}</label>
+                            </td>
+                            <td name="search" data-pk={{ contract.pk }}>
+                                {{ contract.value_global }}
+                            </td>
+                            <td name="search" data-pk={{ contract.pk }}>
+                                {{ contract.value_mensal }}
+                            </td>
+                            <td name="search" data-pk={{ contract.pk }}>
+                                <div class="d-flex flex-column" style="gap:1px;">
+                                    {% for fiscal in contract.fiscais.all %}
+                                    <a href="{% url 'contract_dash_fiscais_pk' fiscal.pk %}">
+                                        {{ fiscal.first_name }} {{ fiscal.last_name }} ({{ fiscal.sector.name }})
+                                    </a>
+                                </div>
+                                {% endfor %}
+                            </td>
+                            <td name="search" data-pk={{ contract.pk }}>
+                                <div class="d-flex flex-column" style="gap:1px;">
+                                    {{ contract.start_date }}
+                                    <span>á {{ contract.end_date }} (TA {{ contract.ta }})</span>
+                                </div>
+                            </td>
+                            <td name="search" data-pk={{ contract.pk }}>
+                                {{ contract.font }}
+                            </td>
+                            <td >
+                                <button type="button" class="btn" onclick="EditContractCanvas({{contract.infos_json|safe}});">
+                                    <span class="fa-stack">
+                                        <i class="fa fa-square fa-stack-2x icon-bg"></i>
+                                        <i class="fa fa-pencil fa-stack-1x fa-inverse icon-c"></i>
+                                    </span>
+                                </button>
+                                <button type="button" class="btn" onclick="DeleteContract('{{ contract.number_contract }}', '{{ contract.pk }}')" class="table-link danger">
+                                    <span class="fa-stack">
+                                        <i class="fa fa-square fa-stack-2x icon-bg"></i>
+                                        <i class="fa fa-trash fa-stack-1x fa-inverse icon-c"></i>
+                                    </span>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'parciais/contracts/_canvasContract.html' %}
+<script>
+    SetSelectTas({{tas|safe}});
+    window.addEventListener("load", (e)=>{
+        ConfigureButton(`tr[name='search']`, `td[name='search']`, 'contract');
+    })
+</script>
+{% endblock body %}
+

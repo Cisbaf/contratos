@@ -1,0 +1,70 @@
+{% extends 'static/contracts/base_dash.html' %}
+{% load static %}
+
+{% block head %}
+    <title>Cisbaf - Setores</title>
+{% endblock head %}
+
+{% block body %}
+
+<div class="container">
+  <br>
+    <h1> Setores </h1>
+    <form class="row g-3" action="{% url 'contract_create_sector' %}" method="POST">
+      {% csrf_token %}
+      <div class="col-auto">
+        <input type="text" class="form-control" name="name" placeholder="Nome do Setor">
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="btn abtn">Criar Setor</button>
+        <button type="button"  class="btn abtn">Editar Setor</button>
+
+      </div>
+    </form>
+    <br>
+    <div class="accordion" id="accordionSector">
+        {% for sector in sectors %}
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ sector.pk }}" aria-expanded="false" aria-controls="collapse{{ sector.pk }}">
+                {{ sector.name }}
+              </button>
+            </h2>
+            <div id="collapse{{ sector.pk }}" class="accordion-collapse collapse" data-bs-parent="#accordionSector">
+                <div class="accordion-body">
+                <div>
+                  {% if sectors %}
+                    <div class="d-flex flex-row flex-wrap" style="gap: 5px;">
+                    {% for fiscal in sector.users %}
+                        <div class="card">
+                          <div class="card-body">
+                            <a href="{% url 'contract_dash_fiscais_pk' fiscal.pk %}">
+                            <h5 class="card-title">{{ fiscal.first_name }} {{ fiscal.last_name }}</h5>
+                            </a>
+                            <button class="btn abtn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMessage{{ fiscal.pk }}" aria-expanded="false" aria-controls="collapseMessage{{ fiscal.pk }}">
+                              Entrar em contato
+                            </button>
+                            <div class="collapse" id="collapseMessage{{ fiscal.pk }}">
+                              <div class="card card-body">
+                                <textarea rows="4" cols="50"> </textarea>
+                                <a href="#" class="btn btn-primary abtn">Enviar Mensagem</a>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                 <b>Nenhum usuário nesse setor</b>
+                {% endif %}
+                </div>
+                <div id="options">
+                </div>
+                </div>
+              </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock body %}

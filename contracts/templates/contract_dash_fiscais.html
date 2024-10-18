@@ -1,0 +1,99 @@
+{% extends 'static/contracts/base_dash.html' %}
+{% load static %}
+
+{% block head%}
+    <script src="{% static 'contracts/js/api.js' %}"></script>
+    <script src="{% static 'contracts/js/ofcanvasFiscal.js' %}"></script>
+    <script src="{% static 'contracts/js/pageFiscais.js' %}"></script>
+    <script src="{% static 'contracts/js/global.js' %}"></script>
+
+
+    <title>Cisbaf - Fiscais </title>
+
+{% endblock head %}
+
+{% block body %}
+<div class="container">
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="main-box clearfix">
+                    <div class="table-responsive" style="overflow: auto;max-height: 80vh;">
+                        <table class="table user-list">
+                            <thead>
+                                <tr>
+                                    <th><span>Fiscal</span></th>
+                                    <th><span>Celular</span></th>
+                                    <th><span>Email</span></th>
+                                    <th>
+                                        <button class="btn btn-link" type="button" onclick="CreateUserCanvas();">
+                                            ADICIONAR
+                                        </button>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for fiscal in data_users %}
+                                <tr id="fiscal-{{ fiscal.pk }}" name="search">
+
+                                    <td name="search" data-pk={{ fiscal.pk }}>
+                                       <div class="d-flex"  style="gap: 10px;">
+                                        <i style="width: 30px;align-self: center;font-size:20px;" class="fa-regular fa-user "></i>
+
+                                        <div class="d-flex flex-column" >
+                                            <a href="#" class="user-link" style="margin-left: 0px;">{{ fiscal.first_name }} {{ fiscal.last_name }} </a>
+                                            <span class="user-subhead">{{ fiscal.sector.name }}</span>
+    
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td name="search" data-pk={{ fiscal.pk }}>
+                                        {{ fiscal.cell_phone }}
+                                    </td>
+                        
+                                    <td name="search" data-pk={{ fiscal.pk }}>
+                                        {{ fiscal.email }}
+                                    </td>
+                                    <td style="width: 20%;">
+                                        <button type="button" class="btn" onclick="EditUserCanvas(`{{fiscal.infos_json|safe}}`);">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x icon-bg"></i>
+                                                <i class="fa fa-pencil fa-stack-1x fa-inverse icon-c"></i>
+                                            </span>
+                                        </button>
+                                        <button type="button" class="btn" onclick="DeleteFiscal('{{ fiscal.first_name }} {{ fiscal.last_name }}', {{ fiscal.pk }})" class="table-link danger">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x icon-bg"></i>
+                                                <i class="fa fa-trash fa-stack-1x fa-inverse icon-c"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% comment %} <ul class="pagination pull-right">
+                        <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
+                    </ul> {% endcomment %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% include 'parciais/contracts/_canvasUser.html' %}
+<script>
+    window.addEventListener("load", (e)=>{
+        ConfigureButton(`tr[name='search']`, `td[name='search']`, 'fiscal');
+    })
+</script>
+{% endblock body %}
+

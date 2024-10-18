@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="pt-br">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style rel="stylesheet">
+      {% if user.theme %}
+        {{user.theme}}
+      {% else %}
+      :root {
+        --primary-color: #ffd800;
+        --icon-bc: #ffd800;
+        --icon-bc-hover: #ffc400;
+        --icon-c: black;
+        --menu-bc: #ffff;
+        --menu-bc-hover: #f0f0f0;
+        --menu-c: rgb(22, 22, 22);
+        }
+      {% endif %}
+    </style>
+    {% include 'parciais/contracts/_head_dash.html' %}
+    {% block head %} {% endblock%}
+  </head>
+  <body>
+    <div class="page">
+      <div class="pageLeft">
+        <div class="menu">
+          <h1>DASHBOARD</h1>
+          <hr>
+          <section>
+ 
+            <nav>
+
+              <a href="{% url 'contract_dash_contract' %}"> Menu Contratos </a>
+            </nav>
+            <nav>
+
+              <a href="{% url 'contract_dash_fiscais' %}"> Menu Fiscais </a>
+            </nav>
+            <nav>
+
+              <a href="{% url 'contract_dash_sectors' %}"> Menu Setores </a>
+            </nav>
+          </section>
+        </div>
+        <footer>
+          <a class="btn" style="padding:0px;" href={% url 'theme' 0 %} >
+            <span class="fa-stack">
+              <i class="fa-solid fa-droplet"></i>
+                <i class="fa fa-square fa-stack-2x" style="color: #6f6700e0;"></i>
+              </span>
+            </a>
+            <a class="btn" style="padding:0px;" href={% url 'theme' 1 %} >
+              <span class="fa-stack">
+                <i class="fa-solid fa-droplet"></i>
+                  <i class="fa fa-square fa-stack-2x" style="color: #d2d3d5;"></i>
+                </span>
+              </a>
+              <a class="btn" style="padding:0px;" href={% url 'theme' 2 %} >
+                <span class="fa-stack">
+                  <i class="fa-solid fa-droplet"></i>
+                    <i class="fa fa-square fa-stack-2x" style="color: #1b5974;"></i>
+                  </span>
+                </a>
+        </footer>
+    
+      </div>
+      <div class="pageRight shadow">
+        {% include 'parciais/contracts/_nav.html' %}
+          {% if messages %}
+          {% for message in messages %}
+            <div class="alert {{message.tags}} container mt-2" role="alert">
+                {{message}} 
+            </div>
+          {% endfor %}
+        {% endif %}
+        {% block body %}{% endblock body %}
+      </div>
+    </div>
+  </body>
+</html>

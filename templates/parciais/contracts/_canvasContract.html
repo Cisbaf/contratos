@@ -1,0 +1,68 @@
+
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="canvasCreateContract" aria-labelledby="canvasCreateContractLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="canvasCreateContractLabel">Pagina Contrato</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+
+      <form action="{% url 'contract_options' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="pk" type="text" id="pk">
+        <input type="hidden" name="_method" value="put" id="method">
+      <div class="d-flex" style="gap: 10px;">
+        <div class="mb-3">
+          <label for="number_contract" class="form-label">Numero do Contrato</label>
+          <input name="number_contract" type="text" class="form-control" id="numberContract" placeholder="ex: 2021/07" required>
+        </div>
+        <div class="mb-3">
+          <label for="number_process" class="form-label">Numero do Processo</label>
+          <input name="number_process" type="text" class="form-control" id="numberProcess" placeholder="" required>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="object_contract" class="form-label">Objeto de Contrato</label>
+        <textarea name="object_contract" type="text" class="form-control" id="objectContract" placeholder="ex: Serviço de Locação" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="company" class="form-label">Empresa</label>
+        <input name="company" type="text" class="form-control" id="company" placeholder="ex: Cisbaf" required>
+      </div>
+      <div class="mb-3">
+        <label for="cnpj_cpf" class="form-label">CNPJ/CPF</label>
+        <input name="cnpj_cpf" type="text" class="form-control" id="cnpjCpf" placeholder="cnpj/cpf" required>
+      </div>
+      <div class="d-flex" style="gap: 2px;">
+        <div class="mb-3">
+          <label for="value_global" class="form-label">Valor Global</label>
+          <input name="value_global" type="text" class="form-control" id="valueGlobal" placeholder="R$:" required>
+        </div>
+        <div class="mb-3">
+          <label for="value_mensal" class="form-label">Valor Mensal</label>
+          <input name="value_mensal" type="text" class="form-control" id="valueMensal" placeholder="" required>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="company" class="form-label">Fiscais</label>
+        <ul class="list-group listuser" id="ulGroup">
+          
+        </ul>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Vigencia</label>
+        <div class="d-flex" style="gap: 5px;">
+          <input name="start_date" type="text" class="form-control" id="startDate" placeholder="01/05/2024" required>
+          <input name="end_date" type="text" class="form-control" id="endDate" placeholder="27/12/2024" required>
+          <select name="ta"  class="form-control" id="selectTa">
+          </select>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="font" class="form-label">Fonte</label>
+        <input name="font" type="text" class="form-control" id="font" placeholder="Fonte de Recurso" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Salvar</button>
+    </form>
+    </div>
+  </div>

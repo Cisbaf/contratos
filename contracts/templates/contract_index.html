@@ -1,0 +1,99 @@
+{% extends 'static/contracts/base.html' %}
+{% load static %}
+{% load contract_func %}
+
+{% block head %}
+    <title>Cisbaf - Contratos</title>
+    <script src="{% static 'contracts/js/global.js' %}"></script>
+
+{% endblock head %}
+
+{% block body %}
+    <div class="container">
+        <h1> Meus Contratos </h1>
+        {% if contracts %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="main-box clearfix">
+                    <div class="table-responsive" style="overflow: auto;max-height: 80vh;">
+                        <table class="table user-list">
+                            <thead>
+                                <tr>
+                                    <th><span>Numero Contrato</span></th>
+                                    <th><span>Objeto Contrato</span></th>
+                                    <th><span>Numero Processo</span></th>
+                                    <th><span>Empresa</span></th>
+                                    <th><span>CNPJ/CPF</span></th>
+                                    <th><span>Valor Global</span></th>
+                                    <th><span>Valor Mensal</span></th>
+                                    <th><span>Fiscais</span></th>
+                                    <th><span>Vigencia</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for contract in contracts %}
+                               
+                                <tr id="contract-{{ contract.pk }}" name="search">
+                                    <td name="search" data-pk={{ contract.pk }}>
+                                      <div class="d-flex justify-content-center align-items-center" style="gap: 20px;">
+                                        <svg style="width: 20px;" class="icon-c" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM80 64h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H80c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H80c-8.8 0-16-7.2-16-16s7.2-16 16-16zm54.2 253.8c-6.1 20.3-24.8 34.2-46 34.2H80c-8.8 0-16-7.2-16-16s7.2-16 16-16h8.2c7.1 0 13.3-4.6 15.3-11.4l14.9-49.5c3.4-11.3 13.8-19.1 25.6-19.1s22.2 7.7 25.6 19.1l11.6 38.6c7.4-6.2 16.8-9.7 26.8-9.7c15.9 0 30.4 9 37.5 23.2l4.4 8.8H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H240c-6.1 0-11.6-3.4-14.3-8.8l-8.8-17.7c-1.7-3.4-5.1-5.5-8.8-5.5s-7.2 2.1-8.8 5.5l-8.8 17.7c-2.9 5.9-9.2 9.4-15.7 8.8s-12.1-5.1-13.9-11.3L144 349l-9.8 32.8z"/></svg>
+                                        {{ contract.number_contract }}
+                                      </div>
+                                    </td>
+                                    <td name="search" data-pk={{ contract.pk }}>
+                                        {{ contract.object }}
+                                    </td>
+                                    <td name="search" data-pk={{ contract.pk }}>
+                                        {{ contract.number_process }}
+                                    </td>
+                                    <td name="search" data-pk={{ contract.pk }}>
+                                        {{ contract.company }}
+                                    </td>
+                                    <td name="search" data-pk={{ contract.pk }}>
+                                        {{ contract.cnpj_cpf }}
+                                    </td>
+                                    <td name="search" data-pk={{ contract.pk }}>
+                                        {{ contract.value_global }}
+                                    </td>
+                                    <td name="search" data-pk={{ contract.pk }}>
+                                        {{ contract.value_mensal }}
+                                    </td>
+                                    <td name="search" data-pk={{ contract.pk }}>
+                                        <div class="d-flex flex-column" style="gap:1px;">
+                                            {% for fiscal in contract.fiscais.all %}
+                                            <span>
+                                                {{ fiscal.first_name }} {{ fiscal.last_name }} ({{ fiscal.sector.name }})
+                                            </span>
+                                        </div>
+                                        {% endfor %}
+                                    </td>
+                                    <td name="search" data-pk={{ contract.pk }}>
+                                        <div class="d-flex flex-column" style="gap:1px;">
+                                            {{ contract.start_date }}
+                                            <span>á {{ contract.end_date }}</span>
+                                        </div>
+                                        {% if contract.diference.type == "month" %}
+                                            <span class="badge text-bg-{% if contract.diference.date > 3 %}success{% else %}warning{% endif %}">{{ contract.diference.date }} mes(es) para renovação</span>
+                                        {% elif contract.diference.type == "day" %}
+                                        <span class="badge text-bg-danger">{{ contract.diference.date }} dias para renovação</span>
+                                        {% endif %}
+                                    </td>
+                                    
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+            <h5>Nenhum contrato encontrado!</h5>
+        {% endif %}
+    </div>
+    <script>
+        window.addEventListener("load", (e)=>{
+            ConfigureButton(`tr[name='search']`, `td[name='search']`, 'contract');
+        })
+    </script>
+{% endblock %}
