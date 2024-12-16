@@ -29,7 +29,6 @@ class CustomUser(AbstractUser):
     @classmethod
     def get_users(cls, **kwargs):
         data_users = CustomUser.objects.filter(**kwargs)
-        print('ex', data_users)
         for user in data_users:
             user.att_json()
         return data_users

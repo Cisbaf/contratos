@@ -85,6 +85,8 @@ def register_fiscais_fake(request):
     pass
 
 def define_color(request, index: int):
+    if not request.user.pk:
+        return redirect('/login')
     user = CustomUser.get_user(request.user.pk)
     match index:
         case 0:

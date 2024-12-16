@@ -8,21 +8,10 @@
 {% block body %}
 
 <div class="container">
+  
   <br>
-    <h1> Setores </h1>
-    <form class="row g-3" action="{% url 'contract_create_sector' %}" method="POST">
-      {% csrf_token %}
-      <div class="col-auto">
-        <input type="text" class="form-control" name="name" placeholder="Nome do Setor">
-      </div>
-      <div class="col-auto">
-        <button type="submit" class="btn abtn">Criar Setor</button>
-        <button type="button"  class="btn abtn">Editar Setor</button>
-
-      </div>
-    </form>
-    <br>
-    <div class="accordion" id="accordionSector">
+    <h3>Setores</h3>
+    <div class="accordion" id="accordionSector" >
         {% for sector in sectors %}
         <div class="accordion-item">
             <h2 class="accordion-header">
@@ -32,39 +21,88 @@
             </h2>
             <div id="collapse{{ sector.pk }}" class="accordion-collapse collapse" data-bs-parent="#accordionSector">
                 <div class="accordion-body">
-                <div>
                   {% if sectors %}
-                    <div class="d-flex flex-row flex-wrap" style="gap: 5px;">
-                    {% for fiscal in sector.users %}
-                        <div class="card">
-                          <div class="card-body">
-                            <a href="{% url 'contract_dash_fiscais_pk' fiscal.pk %}">
-                            <h5 class="card-title">{{ fiscal.first_name }} {{ fiscal.last_name }}</h5>
-                            </a>
-                            <button class="btn abtn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMessage{{ fiscal.pk }}" aria-expanded="false" aria-controls="collapseMessage{{ fiscal.pk }}">
-                              Entrar em contato
-                            </button>
-                            <div class="collapse" id="collapseMessage{{ fiscal.pk }}">
-                              <div class="card card-body">
-                                <textarea rows="4" cols="50"> </textarea>
-                                <a href="#" class="btn btn-primary abtn">Enviar Mensagem</a>
-                              </div>
-                            </div>
+                    <div class="accordion" id="accordionFiscais-{{sector.pk}}">
+                      
+                      
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSector-{{sector.pk}}" aria-expanded="true" aria-controls="collapseOne">
+                            Fiscais do setor {{sector.name}}
+                          </button>
+                        </h2>
+                        <div id="collapseSector-{{sector.pk}}" class="accordion-collapse collapse" data-bs-parent="#accordionFiscais-{{sector.pk}}">
+                          <div class="accordion-body">
+                            <div style="display:flex; flex-direction: row; gap: 5px;">
+
+                              {% for fiscal in sector.users %}
+                                    <div class="card">
+                                      <div class="card-body">
+                                        <a href="{% url 'contract_dash_fiscais_pk' fiscal.pk %}">
+                                        <h5 class="card-title">{{ fiscal.first_name }} {{ fiscal.last_name }}</h5>
+                                        </a>
+                                        <button class="btn abtn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMessage{{ fiscal.pk }}" aria-expanded="false" aria-controls="collapseMessage{{ fiscal.pk }}">
+                                          Entrar em contato (EM DESENVOLVIMENTO)
+                                        </button>
+                                        <div class="collapse" id="collapseMessage{{ fiscal.pk }}">
+                                          <div class="card card-body">
+                                            <textarea rows="4" cols="50"> </textarea>
+                                            <a href="#" class="btn btn-primary abtn">Enviar Mensagem</a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                  </div>
+                              {% endfor %}
+                                </div>
+
                           </div>
+                        </div>
                       </div>
-                    {% endfor %}
-                    </div>
-                {% else %}
+
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#colappseEdit-{{sector.pk}}" aria-expanded="true" aria-controls="colappseEdit-{{sector.pk}}">
+                            Editar informações do setor
+                          </button>
+                        </h2>
+                        <div id="colappseEdit-{{sector.pk}}" class="accordion-collapse collapse" data-bs-parent="#accordionFiscais-{{sector.pk}}">
+                          <div class="accordion-body">
+                             <form class="row g-3" action="{% url 'contract_rename_sector' %}" method="POST">{% csrf_token %}
+                                  <input type="hidden" class="form-control" name="pk" value="{{ sector.pk }}">
+                                  <input type="text" class="form-control" name="name" value="{{ sector.name }}" placeholder="Nome do Setor">
+                                  <button type="submit" class="btn btn-success">Renomear</button>
+                             </form>
+                             <br>
+                              <form class="row g-3" action="{% url 'contract_delete_sector' %}" method="POST">{% csrf_token %}
+                                  <input type="hidden" class="form-control" name="pk" value="{{ sector.pk }}">
+                                  <button type="submit" class="btn btn-danger">Deletar</button>
+                              </form>
+                          </div>
+                        </div>
+                      </div>
+          
+                  {% else %}
                  <b>Nenhum usuário nesse setor</b>
                 {% endif %}
-                </div>
-                <div id="options">
                 </div>
                 </div>
               </div>
         </div>
         {% endfor %}
     </div>
+  <br><br>
+    <form class="row g-3" action="{% url 'contract_create_sector' %}" method="POST">
+      {% csrf_token %}
+
+      <div class="card">
+        <div class="card-body" style="display:flex;flex-direction:column;gap:10px;">
+          <h5 class="card-title">Criar novo setor</h5>
+          <h6 class="card-subtitle mb-2 text-body-secondary">Nome do setor</h6>
+          <input type="text" class="form-control" name="name" placeholder="Nome do Setor">
+          <button type="submit" class="btn abtn">Criar Setor</button>
+        </div>
+      </div>
+    </form>
 </div>
 
 {% endblock body %}

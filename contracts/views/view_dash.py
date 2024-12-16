@@ -4,7 +4,6 @@ from accounts.models import CustomUser
 import json
 
 def index(request):
-    print('hola')
     return render(request, 'contract_dash_index.html')
 
 def dash_fiscais(request, pk: int=None):

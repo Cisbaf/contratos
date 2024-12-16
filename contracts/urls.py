@@ -20,4 +20,7 @@ urlpatterns = [
     # api sector
     path('sector/all', view_sector.get_sectors, name="contract_get_sectors"),
     path('sector/create', view_sector.create_sector, name="contract_create_sector"),
+    path('sector/rename', view_sector.rename_sector, name="contract_rename_sector"),
+    path('sector/delete', view_sector.delete_sector, name="contract_delete_sector"),
+
 ]
