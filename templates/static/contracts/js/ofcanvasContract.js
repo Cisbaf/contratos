@@ -91,6 +91,10 @@ async function SetSelect(){
 
 async function SetSelectTas(tas_json){
     window.addEventListener("load", (e)=>{
+        let option_default = document.createElement('option');
+        option_default.value = "";
+        option_default.innerText = "--";
+        selectTa.appendChild(option_default);
         tas_json.forEach(ta=>{
             const option = document.createElement('option');
             option.value = ta[0];

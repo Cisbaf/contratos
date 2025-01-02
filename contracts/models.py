@@ -16,7 +16,7 @@ class Contract(models.Model):
     font = models.CharField('Fonte de Recurso', max_length=200, blank=True, null=True)
     ta = models.CharField('TA',
                         max_length=200,
-                        choices=(('1', 'TA 1'), ('2', 'TA 2'), ('3', 'TA 3'), ('4', 'TA 4')))
+                        choices=(('1', 'TA 1'), ('2', 'TA 2'), ('3', 'TA 3'), ('4', 'TA 4'), ('5', 'TA 5'), ('6', 'TA 6')))
     diference = None
     infos_json = None
 
