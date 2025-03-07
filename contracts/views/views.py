@@ -1,14 +1,11 @@
 from django.shortcuts import render, redirect
 from contracts.models import Contract
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from accounts.models import CustomUser
 import datetime
 from dateutil.relativedelta import relativedelta
 
-
-@login_required(login_url='contract_login')
 def index(request):
     if not request.user.is_authenticated:
         return redirect("contract_login")
