@@ -2,13 +2,14 @@ from django.shortcuts import redirect
 from contracts.models import Sector
 from django.http.response import JsonResponse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
 def get_sectors(request):
     sectores = [sector.to_json() for sector in Sector.objects.all()]
     return JsonResponse(data=sectores, safe=False)
 
-
+@login_required(login_url='contract_login')
 def create_sector(request):
 
     if request.method == 'POST':
@@ -21,6 +22,7 @@ def create_sector(request):
 
     return redirect('contract_dash_sectors')
 
+@login_required(login_url='contract_login')
 def rename_sector(request):
 
     if request.method == 'POST':
@@ -37,6 +39,7 @@ def rename_sector(request):
 
     return redirect('contract_dash_sectors')
 
+@login_required(login_url='contract_login')
 def delete_sector(request):
 
     if request.method == 'POST':
