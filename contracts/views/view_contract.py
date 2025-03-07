@@ -32,23 +32,29 @@ def sanitize_text_for_json(text: str) -> str:
     text = text.replace(':', " ")
     return text
 
+def remove_json(text: str) -> str:
+    text = text.replace("'", "")
+    text = text.replace('"', "")
+    return text
+
+
 def contract_request_options(request):
     if request.method == 'POST':
         method = request.POST.get('_method')
         if not method:
             raise
         form = request.POST
-        object_contract = sanitize_text_for_json(form.get('object_contract'))
-        number_contract = form.get('number_contract')
+        object_contract = remove_json(sanitize_text_for_json(form.get('object_contract')))
+        number_contract = remove_json(form.get('number_contract'))
         number_process = form.get('number_process')
         cnpj_cpf = form.get('cnpj_cpf')
         value_global = form.get('value_global')
         value_mensal = form.get('value_mensal')
-        company = form.get('company')
+        company = remove_json(form.get('company'))
         fiscais = form.getlist('fiscais')
         start_date = form.get('start_date')
         end_date = form.get('end_date')
-        font = form.get('font')
+        font = remove_json(form.get('font'))
         ta = form.get('ta')
         list_fiscais = [CustomUser.get_user(pk=pk) for pk in fiscais]
         match method:

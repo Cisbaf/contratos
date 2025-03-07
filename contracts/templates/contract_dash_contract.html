@@ -79,7 +79,7 @@
                             <td name="search" data-pk={{ contract.pk }}>
                                 <div class="d-flex flex-column" style="gap:1px;">
                                     {{ contract.start_date }}
-                                    <span>á {{ contract.end_date }} (TA {{ contract.ta }})</span>
+                                    <span>á {{ contract.end_date }} {% if contract.ta %} (TA {{ contract.ta }}) {% endif %}</span>
                                 </div>
                             </td>
                             <td name="search" data-pk={{ contract.pk }}>

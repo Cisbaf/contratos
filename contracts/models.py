@@ -10,11 +10,13 @@ class Contract(models.Model):
     cnpj_cpf = models.CharField('CNPJ/CPF', max_length=200)
     value_global = models.CharField('Valor Global', max_length=200)
     value_mensal = models.CharField('Valor Mensal', max_length=200)
-    fiscais = models.ManyToManyField(CustomUser)
+    fiscais = models.ManyToManyField(CustomUser, blank=True, null=True)
     start_date = models.DateField(default=datetime.date.today)
     end_date = models.DateField(default=datetime.date.today)
     font = models.CharField('Fonte de Recurso', max_length=200, blank=True, null=True)
     ta = models.CharField('TA',
+                        null=True,
+                        blank=True,
                         max_length=200,
                         choices=(('1', 'TA 1'), ('2', 'TA 2'), ('3', 'TA 3'), ('4', 'TA 4'), ('5', 'TA 5'), ('6', 'TA 6')))
     diference = None
@@ -37,7 +39,7 @@ class Contract(models.Model):
             'fiscais': [fiscal.infos_json for fiscal in fiscais],
             'start_date': self.start_date.strftime("%d/%m/%Y"),
             'end_date': self.end_date.strftime("%d/%m/%Y"),
-            'ta': self.ta,
+            'ta': self.ta if self.ta else '--',
             'font': self.font,
         }
 
