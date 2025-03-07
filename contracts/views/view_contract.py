@@ -33,6 +33,12 @@ def sanitize_text_for_json(text: str) -> str:
     text = text.replace(':', " ")
     return text
 
+def remove_json(text: str) -> str:
+    text = text.replace("'", "")
+    text = text.replace('"', "")
+    return text
+
+
 @login_required(login_url='contract_login')
 def contract_request_options(request):
     if request.method == 'POST':
@@ -40,8 +46,8 @@ def contract_request_options(request):
         if not method:
             raise
         form = request.POST
-        object_contract = sanitize_text_for_json(form.get('object_contract'))
-        number_contract = form.get('number_contract')
+        object_contract = remove_json(sanitize_text_for_json(form.get('object_contract')))
+        number_contract = remove_json(form.get('number_contract'))
         number_process = form.get('number_process')
         cnpj_cpf = form.get('cnpj_cpf')
         value_global = form.get('value_global')
