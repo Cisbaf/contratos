@@ -6,6 +6,7 @@ from datetime import datetime
 from faker import Faker
 from accounts.models import CustomUser
 import random, re
+from django.contrib.auth.decorators import login_required
 
 fake = Faker()
 
@@ -32,6 +33,7 @@ def sanitize_text_for_json(text: str) -> str:
     text = text.replace(':', " ")
     return text
 
+@login_required(login_url='contract_login')
 def contract_request_options(request):
     if request.method == 'POST':
         method = request.POST.get('_method')
@@ -88,7 +90,7 @@ def contract_request_options(request):
                 messages.success(request, f'Contrato {number_contract} atualizado!')
     return redirect(request.META.get('HTTP_REFERER', 'contract_dash_contract'))
 
-
+@login_required(login_url='contract_login')
 def contract_delete(request, pk):
     if not request.user.is_staff:
         messages.success(request, f'Apenas o administrador pode deletar!')
